@@ -1,10 +1,12 @@
 package com.farerboy.oa.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.farerboy.oa.dto.SessionInfo;
-import com.farerboy.oa.dto.SystemUserDto;
+import com.farerboy.oa.dto.SystemUserDTO;
 import com.farerboy.oa.model.SystemUser;
+import com.farerboy.oa.param.UserDataGridParam;
 import com.farerboy.oa.service.base.BaseService;
+import com.farerboy.oa.vo.easyui.DataGrid;
+
+import java.text.ParseException;
 
 /**
  * TODO description
@@ -20,6 +22,7 @@ public interface UserService extends BaseService<SystemUser> {
      * @param userToken
      * @return boolean
      */
-    SystemUserDto login(String userName, String userToken);
+    SystemUserDTO login(String userName, String userToken);
 
+    DataGrid datagrid(UserDataGridParam user) throws ParseException;
 }

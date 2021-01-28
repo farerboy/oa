@@ -11,7 +11,7 @@ import java.util.Date;
  * @date 2021/1/16 7:09 下午
  */
 @Data
-public class SystemUserDto {
+public class SystemUserDTO {
 
     private Long id;
 

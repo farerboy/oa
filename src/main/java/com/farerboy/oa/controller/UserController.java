@@ -3,13 +3,16 @@ package com.farerboy.oa.controller;
 import com.farerboy.framework.boot.common.dto.ServerResponse;
 import com.farerboy.framework.boot.core.helper.RequestHelper;
 import com.farerboy.oa.dto.SessionInfo;
-import com.farerboy.oa.dto.SystemUserDto;
+import com.farerboy.oa.dto.SystemUserDTO;
+import com.farerboy.oa.param.UserDataGridParam;
 import com.farerboy.oa.param.UserLoginParam;
 import com.farerboy.oa.service.UserService;
+import com.farerboy.oa.vo.easyui.DataGrid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 
 /**
  *
@@ -58,7 +61,7 @@ public class UserController{
 
 	@PostMapping("login")
 	public ServerResponse login(UserLoginParam userLoginParam, HttpServletRequest request) {
-		SystemUserDto systemUserDto = userService.login(userLoginParam.getUserName(),userLoginParam.getUserToken());
+		SystemUserDTO systemUserDto = userService.login(userLoginParam.getUserName(),userLoginParam.getUserToken());
 		if(systemUserDto == null){
 			return ServerResponse.createByErrorMessage("登录失败！用户名或密码错误！");
 
@@ -70,6 +73,11 @@ public class UserController{
 		sessionInfo.setLock(false);
 		request.setAttribute("sessionInfo", sessionInfo);
 		return ServerResponse.createBySuccess("登录成功",sessionInfo);
+	}
+
+	@PostMapping("datagrid")
+	public DataGrid datagrid(UserDataGridParam user) throws ParseException {
+		return userService.datagrid(user);
 	}
 
 //	public void doNotNeedSession_logout() {
@@ -137,9 +145,7 @@ public class UserController{
 //		super.writeJson(j);
 //	}
 //
-//	public void datagrid() {
-//		super.writeJson(userService.datagrid(user));
-//	}
+
 //
 //	public void doNotNeedSession_datagrid() {
 //		if (user.getQ() != null && !user.getQ().trim().equals("")) {
