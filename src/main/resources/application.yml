@@ -1,0 +1,67 @@
+spring:
+  # 环境 dev|test|prod
+  profiles:
+    active: dev
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  http:
+    encoding:
+      force: true
+      enabled: true
+      charset: UTF-8
+  application:
+    name: oa
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+#  servlet:
+#    context-path: /platform-account-center
+#mybatis
+mybatis-plus:
+  mapper-locations:  classpath*:mapper/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  #typeAliasesPackage: com.yiyu.cloud.course.entity
+  global-config:
+    #数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      #驼峰下划线转换
+      column-underline: true
+    # 控制台输出mybatis-plus的LOGO
+    banner: false
+  #原生配置
+  configuration:
+    # 是否开启自动驼峰命名规则（camel case）映射
+    map-underscore-to-camel-case: true
+    # 是否开启 mybatis 的二级缓存
+    cache-enabled: true
+    # MyBatis 在使用 resultMap 来映射查询结果中的列，如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段，这就导致在调用到该字段的时候由于没有映射，取不到而报空指针异常。
+    call-setters-on-nulls: true
+
+logging:
+  level:
+    com.farerboy.oa: DEBUG
+
+
+farerboy:
+  project:
+    env-enable: true
+  swagger:
+    scan-base-package: com.farerboy.oa.controller
+#    scan-annotation: org.springframework.web.bind.annotation.PostMapping
+#  rest:
+#    api:
+#      sign-enable: false
+#      sign-key: null
+#      cross-enable: true
+

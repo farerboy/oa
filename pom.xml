@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.farerboy</groupId>
+        <artifactId>framework-boot</artifactId>
+        <version>0.0.2</version>
+    </parent>
+
+    <groupId>com.farerboy</groupId>
+    <artifactId>oa</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
+    <name>oa</name>
+    <properties>
+        <farerboy.framework.boot.version>0.0.2</farerboy.framework.boot.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.farerboy</groupId>
+            <artifactId>framework-boot-core</artifactId>
+            <version>${farerboy.framework.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.farerboy</groupId>
+            <artifactId>framework-boot-orm</artifactId>
+            <version>${farerboy.framework.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.22</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.7</version>
+                <configuration>
+                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
+                    <verbose>true</verbose>
+                    <overwrite>true</overwrite>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <!--将jsp文件编译成字节码文件-->
+            <resource>
+                <directory>src/main/webapp</directory>
+                <includes>
+                    <include>**/*.jsp</include>
+                </includes>
+            </resource>
+        </resources>
+
+    </build>
+</project>
