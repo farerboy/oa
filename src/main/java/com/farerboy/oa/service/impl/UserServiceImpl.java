@@ -64,13 +64,13 @@ public class UserServiceImpl extends BaseServiceImpl<SystemUserMapper,SystemUser
         if(StringUtils.isNotBlank(userDataGridParam.getCreateTimeStart()) && StringUtils.isNotBlank(userDataGridParam.getCreateTimeEnd())){
             Date createStart = DateUtil.parseDateTime(userDataGridParam.getCreateTimeStart());
             Date createEnd = DateUtil.parseDateTime(userDataGridParam.getCreateTimeEnd());
-            wrapper.between("created_time",createStart,createEnd);
+            wrapper.between("create_time",createStart,createEnd);
         }else if(StringUtils.isNotBlank(userDataGridParam.getCreateTimeStart())){
             Date createStart = DateUtil.parseDateTime(userDataGridParam.getCreateTimeStart());
-            wrapper.ge("created_time",createStart);
+            wrapper.ge("create_time",createStart);
         }else if(StringUtils.isNotBlank(userDataGridParam.getCreateTimeEnd())){
             Date createEnd = DateUtil.parseDateTime(userDataGridParam.getCreateTimeEnd());
-            wrapper.le("created_time",createEnd);
+            wrapper.le("create_time",createEnd);
         }
         String sort = null;
         if("userName".equals(userDataGridParam.getSort())){
@@ -101,6 +101,7 @@ public class UserServiceImpl extends BaseServiceImpl<SystemUserMapper,SystemUser
         for(SystemUser systemUser : list){
             UserVO vo = new UserVO();
             BeanUtils.copyProperties(systemUser,vo);
+            vo.setCreateTime(DateUtil.formatDateTime(systemUser.getCreateTime()));
             result.add(vo);
         }
         return result;

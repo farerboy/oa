@@ -9,7 +9,7 @@
 	$(function() {
 
 		treegrid = $('#treegrid').treegrid({
-			url : '${pageContext.request.contextPath}/authAction!treegrid.action',
+			url : '/route/treegrid',
 			toolbar : [ {
 				text : '展开',
 				iconCls : 'icon-redo',
@@ -79,7 +79,7 @@
 				hidden : true
 			}, {
 				field : 'name',
-				title : '权限名称',
+				title : '路由名称',
 				width : 180,
 				formatter : function(value) {
 					if (value) {
@@ -89,7 +89,7 @@
 			} ] ],
 			columns : [ [ {
 				field : 'url',
-				title : '权限地址',
+				title : '路由地址',
 				width : 250,
 				formatter : function(value) {
 					if (value) {
@@ -98,7 +98,7 @@
 				}
 			}, {
 				field : 'description',
-				title : '权限描述',
+				title : '路由描述',
 				width : 250,
 				formatter : function(value) {
 					if (value) {
@@ -110,13 +110,13 @@
 				title : '排序',
 				width : 150
 			}, {
-				field : 'pid',
-				title : '上级权限ID',
+				field : 'parentId',
+				title : '上级路由ID',
 				width : 150,
 				hidden : true
 			}, {
-				field : 'pname',
-				title : '上级权限',
+				field : 'parentName',
+				title : '上级路由',
 				width : 150
 			} ] ],
 			onContextMenu : function(e, row) {
@@ -134,6 +134,7 @@
 			onCollapse : function(row) {
 				treegrid.treegrid('unselectAll');
 			}
+
 		});
 
 	});
@@ -142,7 +143,7 @@
 		var node = treegrid.treegrid('getSelected');
 		if (node) {
 			var p = parent.util.dialog({
-				title : '修改权限',
+				title : '修改路由',
 				href : '${pageContext.request.contextPath}/authAction!authEdit.action',
 				width : 440,
 				height : 200,
@@ -182,8 +183,8 @@
 	}
 	function append() {
 		var p = parent.util.dialog({
-			title : '新增权限',
-			href : '${pageContext.request.contextPath}/authAction!authAdd.action',
+			title : '新增路由',
+			href : '/admin/routeAdd',
 			width : 440,
 			height : 200,
 			buttons : [ {
@@ -208,10 +209,10 @@
 			} ],
 			onLoad : function() {
 				var f = p.find('form');
-				var pid = f.find('input[name=pid]');
-				var ptree = pid.combotree({
+				var parentId = f.find('input[name=parentId]');
+				var ptree = parentId.combotree({
 					lines : true,
-					url : '${pageContext.request.contextPath}/authAction!doNotNeedSession_tree.action'
+					url : '/route/tree'
 				});
 			}
 		});

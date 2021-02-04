@@ -17,4 +17,6 @@ public interface BaseService<T> extends IService<T> {
 
     QueryWrapper<T> getBaseQueryWrapper();
 
+    QueryWrapper<T> getQueryWrapper(T o);
+
 }

@@ -9,7 +9,7 @@
 	$(function() {
 
 		datagrid = $('#datagrid').datagrid({
-			url : '${pageContext.request.contextPath}/roleAction!datagrid.action',
+			url : '/role/datagrid',
 			title : '',
 			iconCls : 'icon-save',
 			pagination : true,

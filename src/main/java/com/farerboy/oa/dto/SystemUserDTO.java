@@ -25,12 +25,12 @@ public class SystemUserDTO {
 
     private String userEmail;
 
-    private String createdBy;
+    private String createBy;
 
-    private Date createdTime;
+    private Date createTime;
 
-    private String updatedBy;
+    private String updateBy;
 
-    private Date updatedTime;
+    private Date updateTime;
 
 }

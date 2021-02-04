@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>在线业务办公自动化平台</title>
+<title>farerboy-admin</title>
 <jsp:include page="inc.jsp"></jsp:include>
 </head>
 <body class="easyui-layout">

@@ -30,6 +30,11 @@
 				title : '',
 				field : ''
 			},{
+                title : 'id',
+                field : 'id',
+                hidden : true,
+            },
+			{
 				title : '账号',
 				field : 'userName',
 				width : 150,
@@ -241,7 +246,7 @@
 	function append() {
 		var p = parent.util.dialog({
 			title : '新增用户',
-			href : '${pageContext.request.contextPath}/userAction!userAdd.action',
+			href : '/admin/userAdd',
 			width : 500,
 			height : 200,
 			buttons : [ {
