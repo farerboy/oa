@@ -1,15 +1,18 @@
 package com.farerboy.oa.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.farerboy.framework.boot.orm.helper.EnvHelper;
 import com.farerboy.oa.mapper.SystemRouteMapper;
 import com.farerboy.oa.model.SystemRoute;
+import com.farerboy.oa.param.RouteAddParam;
+import com.farerboy.oa.param.RouteEditParam;
 import com.farerboy.oa.service.RouteService;
 import com.farerboy.oa.service.base.impl.BaseServiceImpl;
 import com.farerboy.oa.vo.admin.RouteVO;
 import com.farerboy.oa.vo.easyui.TreeNode;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +36,7 @@ public class RouteServiceImpl extends BaseServiceImpl<SystemRouteMapper, SystemR
         if(parentId == null){
             parentId = -1;
         }
-        QueryWrapper wrapper = getBaseQueryWrapper();
+        QueryWrapper wrapper = getBaseQueryWrapper(SystemRoute.class);
         wrapper.eq("parent_id",parentId);
         wrapper.orderByAsc("seq");
         List<SystemRoute> list = baseMapper.selectList(wrapper);
@@ -72,7 +75,7 @@ public class RouteServiceImpl extends BaseServiceImpl<SystemRouteMapper, SystemR
         if(parentId == null){
             parentId = -1;
         }
-        QueryWrapper wrapper = getBaseQueryWrapper();
+        QueryWrapper wrapper = getBaseQueryWrapper(SystemRoute.class);
         wrapper.eq("parent_id",parentId);
         wrapper.orderByAsc("seq");
         List<SystemRoute> list = baseMapper.selectList(wrapper);
@@ -91,4 +94,35 @@ public class RouteServiceImpl extends BaseServiceImpl<SystemRouteMapper, SystemR
         }
         return tree;
     }
+
+    @Override
+    public int add(RouteAddParam routeAddParam) {
+        SystemRoute systemRoute = new SystemRoute();
+        BeanUtils.copyProperties(routeAddParam,systemRoute);
+        systemRoute.setEnv(EnvHelper.getEnv());
+        if(systemRoute.getParentId() == null){
+            systemRoute.setParentId(-1);
+        }
+        baseMapper.insert(systemRoute);
+        return systemRoute.getId();
+    }
+
+    @Override
+    public int edit(RouteEditParam routeEditParam) {
+        SystemRoute systemRoute = new SystemRoute();
+        BeanUtils.copyProperties(routeEditParam,systemRoute);
+        if(systemRoute.getParentId() == null){
+            systemRoute.setParentId(-1);
+        }
+        systemRoute.setEnv(EnvHelper.getEnv());
+        return baseMapper.updateById(systemRoute);
+    }
+
+    @Override
+    public int delete(Integer id) {
+        QueryWrapper queryWrapper = getBaseQueryWrapper(SystemRoute.class);
+        queryWrapper.eq("id",id);
+        return baseMapper.delete(queryWrapper);
+    }
+
 }

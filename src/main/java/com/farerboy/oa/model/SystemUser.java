@@ -28,7 +28,7 @@ public class SystemUser {
 
     private Date updateTime;
 
-    private Byte deleted;
+    private Integer deleted;
 
     private String env;
 

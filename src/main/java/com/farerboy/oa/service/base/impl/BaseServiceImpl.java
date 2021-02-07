@@ -4,16 +4,15 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.farerboy.framework.boot.common.enums.DeletedEnum;
 import com.farerboy.framework.boot.common.exception.BaseException;
-import com.farerboy.framework.boot.core.helper.env.EnvHelper;
+import com.farerboy.framework.boot.orm.helper.DefaultColumnHelper;
 import com.farerboy.oa.service.base.BaseService;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -25,26 +24,45 @@ import java.util.Map;
 public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M,T> implements BaseService<T> {
 
     @Override
-    public Map<String, Object> getBaseColumn() {
+    public Map<String, Object> getBaseColumn(Class<T> cls) {
         Map<String,Object> column = Maps.newHashMap();
-        column.put("env", EnvHelper.getEnvCode());
-        column.put("deleted", DeletedEnum.getNotDeleted());
+        Field[] fields = cls.getDeclaredFields();
+        for (Field f : fields) {
+            f.setAccessible(true);
+            String columnStr = null;
+            TableField tableField = f.getAnnotation(TableField.class);
+            if(tableField != null && StringUtils.isNotBlank(tableField.value())){
+                columnStr = tableField.value();
+            }
+            if(columnStr == null){
+                columnStr = f.getName();
+            }
+            if(DefaultColumnHelper.contains(columnStr)){
+                column.put(columnStr,DefaultColumnHelper.getDefaultColumn(columnStr));
+            }
+        }
         return column;
     }
 
     @Override
-    public QueryWrapper<T> getBaseQueryWrapper() {
+    public QueryWrapper<T> getBaseQueryWrapper(Class<T> cls) {
         QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("env", EnvHelper.getEnvCode());
-        wrapper.eq("deleted", DeletedEnum.getNotDeleted());
+        Map<String,Object> map = getBaseColumn(cls);
+        Set<String> keySet = map.keySet();
+        if(CollectionUtils.isEmpty(keySet)){
+            return wrapper;
+        }
+        for(String key : keySet){
+            wrapper.eq(key,map.get(key));
+        }
         return wrapper;
     }
 
     @Override
     public QueryWrapper<T> getQueryWrapper(T o) {
-        Map<String,Object> map = getBaseColumn();
-        QueryWrapper wrapper = new QueryWrapper();
         Class cls = o.getClass();
+        Map<String,Object> map = getBaseColumn(cls);
+        QueryWrapper wrapper = new QueryWrapper();
         Field[] fields = cls.getDeclaredFields();
         for (Field f : fields) {
             f.setAccessible(true);
@@ -69,14 +87,14 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M,T
                 column = f.getName();
             }
             wrapper.eq(column,fieldObject);
-            if(map.containsKey(column)){
-                map.remove(column);
-            }
+            map.remove(column);
         }
-        if(MapUtils.isEmpty(map)){
-            for (String key:map.keySet()) {
-                wrapper.eq(key,map.get(key));
-            }
+        Set<String> keySet = map.keySet();
+        if(CollectionUtils.isEmpty(keySet)){
+            return wrapper;
+        }
+        for(String key : keySet){
+            wrapper.eq(key,map.get(key));
         }
         return wrapper;
     }

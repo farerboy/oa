@@ -18,6 +18,4 @@ public class SystemMenu {
 
     private String env;
 
-    private Integer deleted;
-
 }

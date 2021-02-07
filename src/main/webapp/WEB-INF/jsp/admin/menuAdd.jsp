@@ -18,10 +18,10 @@
 			</tr>
 			<tr>
 				<th>上级菜单</th>
-				<td><input name="pid" style="width:160px;" />
+				<td><input name="parentId" style="width:160px;" />
 				</td>
 				<th>菜单图标</th>
-				<td><input name="iconCls" style="width:150px;" />
+				<td><input name="iconcls" style="width:150px;" />
 				</td>
 			</tr>
 		</table>

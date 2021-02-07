@@ -144,7 +144,7 @@
 		if (node) {
 			var p = parent.util.dialog({
 				title : '修改路由',
-				href : '${pageContext.request.contextPath}/authAction!authEdit.action',
+				href : '/page/admin/routeEdit',
 				width : 440,
 				height : 200,
 				buttons : [ {
@@ -152,7 +152,7 @@
 					handler : function() {
 						var f = p.find('form');
 						f.form('submit', {
-							url : '${pageContext.request.contextPath}/authAction!edit.action',
+							url : '/route/edit',
 							success : function(d) {
 								var json = $.parseJSON(d);
 								if (json.success) {
@@ -169,10 +169,10 @@
 				} ],
 				onLoad : function() {
 					var f = p.find('form');
-					var pid = f.find('input[name=pid]');
-					var ptree = pid.combotree({
+					var parentId = f.find('input[name=parentId]');
+					var ptree = parentId.combotree({
 						lines : true,
-						url : '${pageContext.request.contextPath}/authAction!doNotNeedSession_treeRecursive.action',
+						url : '/route/tree',
 					});
 					f.form('load', node);
 				}
@@ -184,7 +184,7 @@
 	function append() {
 		var p = parent.util.dialog({
 			title : '新增路由',
-			href : '/admin/routeAdd',
+			href : '/page/admin/routeAdd',
 			width : 440,
 			height : 200,
 			buttons : [ {
@@ -192,7 +192,7 @@
 				handler : function() {
 					var f = p.find('form');
 					f.form('submit', {
-						url : '${pageContext.request.contextPath}/authAction!add.action',
+						url : '/route/add',
 						success : function(d) {
 							var json = $.parseJSON(d);
 							if (json.success) {
@@ -223,7 +223,7 @@
 			parent.util.messagerConfirm('询问', '您确定要删除<' + node.cname + '>？', function(b) {
 				if (b) {
 					$.ajax({
-						url : '${pageContext.request.contextPath}/authAction!delete.action',
+						url : '/route/delete',
 						data : {
 							id : node.id
 						},
@@ -231,7 +231,7 @@
 						dataType : 'JSON',
 						success : function(r) {
 							if (r.success) {
-								treegrid.treegrid('remove', r.obj);
+								treegrid.treegrid('remove', node.id);
 							}
 							parent.util.messagerShow({
 								msg : r.msg,

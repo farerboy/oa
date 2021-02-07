@@ -15,19 +15,18 @@
     <version>0.0.1</version>
     <packaging>jar</packaging>
     <name>oa</name>
-    <properties>
-        <farerboy.framework.boot.version>0.0.2</farerboy.framework.boot.version>
-    </properties>
+<!--    <properties>-->
+<!--        <farerboy.framework.boot.version>0.0.2</farerboy.framework.boot.version>-->
+<!--    </properties>-->
     <dependencies>
-        <dependency>
-            <groupId>com.farerboy</groupId>
-            <artifactId>framework-boot-core</artifactId>
-            <version>${farerboy.framework.boot.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.farerboy</groupId>-->
+<!--            <artifactId>framework-boot-core</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.farerboy</groupId>
             <artifactId>framework-boot-orm</artifactId>
-            <version>${farerboy.framework.boot.version}</version>
+<!--            <version>${farerboy.framework.boot.version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

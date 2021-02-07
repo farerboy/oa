@@ -246,7 +246,7 @@
 	function append() {
 		var p = parent.util.dialog({
 			title : '新增用户',
-			href : '/admin/userAdd',
+			href : '/page/admin/userAdd',
 			width : 500,
 			height : 200,
 			buttons : [ {

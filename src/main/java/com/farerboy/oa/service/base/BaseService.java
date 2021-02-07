@@ -13,9 +13,9 @@ import java.util.Map;
  */
 public interface BaseService<T> extends IService<T> {
 
-    Map<String,Object> getBaseColumn();
+    Map<String,Object> getBaseColumn(Class<T> cls);
 
-    QueryWrapper<T> getBaseQueryWrapper();
+    QueryWrapper<T> getBaseQueryWrapper(Class<T> cls);
 
     QueryWrapper<T> getQueryWrapper(T o);
 

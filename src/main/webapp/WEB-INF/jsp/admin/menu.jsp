@@ -66,7 +66,7 @@
 		} ];
 
 		treegrid = $('#treegrid').treegrid({
-			url : '${pageContext.request.contextPath}/menuAction!treegrid.action',
+			url : '/menu/treegrid',
 			toolbar : [ {
 				text : '展开',
 				iconCls : 'icon-redo',
@@ -145,7 +145,7 @@
 				}
 			} ] ],
 			columns : [ [ {
-				field : 'iconCls',
+				field : 'iconcls',
 				title : '菜单图标',
 				width : 70,
 				formatter : function(value) {
@@ -169,12 +169,12 @@
 				title : '排序',
 				width : 40
 			}, {
-				field : 'pid',
+				field : 'parentId',
 				title : '上级菜单ID',
 				width : 150,
 				hidden : true
 			}, {
-				field : 'pname',
+				field : 'parentName',
 				title : '上级菜单',
 				width : 150
 			} ] ],
@@ -214,7 +214,7 @@
 		if (node) {
 			var p = parent.util.dialog({
 				title : '修改菜单',
-				href : '${pageContext.request.contextPath}/menuAction!menuEdit.action',
+				href : '/page/admin/menuEdit',
 				width : 460,
 				height : 220,
 				buttons : [ {
@@ -222,7 +222,7 @@
 					handler : function() {
 						var f = p.find('form');
 						f.form('submit', {
-							url : '${pageContext.request.contextPath}/menuAction!edit.action',
+							url : '/menu/edit',
 							success : function(d) {
 								var json = $.parseJSON(d);
 								if (json.success) {
@@ -240,8 +240,8 @@
 				} ],
 				onLoad : function() {
 					var f = p.find('form');
-					var pid = f.find('input[name=pid]');
-					var iconCls = f.find('input[name=iconCls]');
+					var pid = f.find('input[name=parentId]');
+					var iconCls = f.find('input[name=iconcls]');
 					var iconCombo = iconCls.combobox({
 						data : iconData,
 						formatter : function(v) {
@@ -250,7 +250,7 @@
 					});
 					var ptree = pid.combotree({
 						lines : true,
-						url : '${pageContext.request.contextPath}/menuAction!doNotNeedSession_treeRecursive.action',
+						url : '/menu/treeRecursive',
 					});
 					f.form('load', node);
 				}
@@ -262,7 +262,7 @@
 	function append() {
 		var p = parent.util.dialog({
 			title : '新增菜单',
-			href : '${pageContext.request.contextPath}/menuAction!menuAdd.action',
+			href : '/page/admin/menuAdd',
 			width : 460,
 			height : 220,
 			buttons : [ {
@@ -270,7 +270,7 @@
 				handler : function() {
 					var f = p.find('form');
 					f.form('submit', {
-						url : '${pageContext.request.contextPath}/menuAction!add.action',
+						url : '/menu/add',
 						success : function(d) {
 							var json = $.parseJSON(d);
 							if (json.success) {
@@ -288,8 +288,8 @@
 			} ],
 			onLoad : function() {
 				var f = p.find('form');
-				var pid = f.find('input[name=pid]');
-				var iconCls = f.find('input[name=iconCls]');
+				var pid = f.find('input[name=parentId]');
+				var iconCls = f.find('input[name=iconcls]');
 				var iconCombo = iconCls.combobox({
 					data : iconData,
 					formatter : function(v) {
@@ -298,7 +298,7 @@
 				});
 				var ptree = pid.combotree({
 					lines : true,
-					url : '${pageContext.request.contextPath}/menuAction!doNotNeedSession_tree.action'
+					url : '/menu/treeRecursive'
 				});
 			}
 		});
@@ -309,7 +309,7 @@
 			parent.util.messagerConfirm('询问', '您确定要删除<' + node.name + '>？', function(b) {
 				if (b) {
 					$.ajax({
-						url : '${pageContext.request.contextPath}/menuAction!delete.action',
+						url : '/menu/delete',
 						data : {
 							id : node.id
 						},
@@ -317,7 +317,7 @@
 						dataType : 'JSON',
 						success : function(r) {
 							if (r.success) {
-								treegrid.treegrid('remove', r.obj);
+								treegrid.treegrid('remove', node.id);
 								parent.ctrlTree.tree('reload');/*刷新左侧菜单树*/
 							}
 							parent.util.messagerShow({

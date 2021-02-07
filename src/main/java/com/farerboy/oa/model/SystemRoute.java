@@ -18,6 +18,4 @@ public class SystemRoute {
 
     private String env;
 
-    private Integer deleted;
-
 }

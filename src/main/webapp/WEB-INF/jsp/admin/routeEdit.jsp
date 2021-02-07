@@ -24,7 +24,7 @@
 			</tr>
 			<tr>
 				<th>上级权限</th>
-				<td colspan="3"><input name="pid" style="width: 335px;" />
+				<td colspan="3"><input name="parentId" style="width: 335px;" />
 				</td>
 			</tr>
 		</table>

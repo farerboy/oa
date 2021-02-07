@@ -19,13 +19,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.unit.DataUnit;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO description
@@ -38,10 +35,7 @@ public class UserServiceImpl extends BaseServiceImpl<SystemUserMapper,SystemUser
 
     @Override
     public SystemUserDTO login(String userName, String userToken) {
-        Map<String,Object> column = getBaseColumn();
-        column.put("user_name",userName);
-        column.put("user_token",userToken);
-        QueryWrapper wrapper = getBaseQueryWrapper();
+        QueryWrapper wrapper = getBaseQueryWrapper(SystemUser.class);
         wrapper.eq("user_name",userName);
         wrapper.eq("user_token",userToken);
         SystemUser systemUser = getOne(wrapper);
@@ -53,8 +47,7 @@ public class UserServiceImpl extends BaseServiceImpl<SystemUserMapper,SystemUser
 
     @Override
     public DataGrid datagrid(UserDataGridParam userDataGridParam) throws ParseException {
-
-        QueryWrapper wrapper = getBaseQueryWrapper();
+        QueryWrapper wrapper = getBaseQueryWrapper(SystemUser.class);
         if(StringUtils.isNotBlank(userDataGridParam.getUserName())){
             wrapper.like("user_name",userDataGridParam.getUserName());
         }

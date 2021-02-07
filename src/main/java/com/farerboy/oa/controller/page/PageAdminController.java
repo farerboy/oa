@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date 2021/1/28 8:11 下午
  */
 @Controller
-@RequestMapping("admin")
-public class AdminPageController {
+@RequestMapping("page/admin")
+public class PageAdminController {
 
     @GetMapping("/route")
     public String route(){
@@ -24,10 +24,31 @@ public class AdminPageController {
         return "admin/routeAdd";
     }
 
+    @GetMapping("/routeEdit")
+    public String routeEdit(){
+        return "admin/routeEdit";
+    }
+
     @GetMapping("/role")
     public String role(){
         return "admin/role";
     }
+
+    @GetMapping("/menu")
+    public String menu(){
+        return "admin/menu";
+    }
+
+    @GetMapping("/menuAdd")
+    public String menuAdd(){
+        return "admin/menuAdd";
+    }
+
+    @GetMapping("/menuEdit")
+    public String menuEdit(){
+        return "admin/menuEdit";
+    }
+
 
     @GetMapping("/user")
     public String user() {
