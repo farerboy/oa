@@ -33,6 +33,11 @@ public class RouteController {
         return routeService.treegrid(id);
     }
 
+    @PostMapping("treegridByAuthorityIdWithCheck")
+    public List<RouteVO> treegridByAuthorityIdWithCheck(Integer authorityId){
+        return routeService.treegridByAuthorityIdWithCheck(authorityId);
+    }
+
     @PostMapping("tree")
     public List<TreeNode> tree(){
         return routeService.tree(null);

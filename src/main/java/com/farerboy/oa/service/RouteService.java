@@ -19,6 +19,8 @@ public interface RouteService extends BaseService<SystemRoute> {
 
     List<RouteVO> treegrid(Integer parentId);
 
+    List<RouteVO> treegridByAuthorityIdWithCheck(Integer authorityId);
+
     List<TreeNode> tree(Integer parentId);
 
     int add(RouteAddParam routeAddParam);

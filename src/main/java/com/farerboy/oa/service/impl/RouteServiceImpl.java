@@ -2,16 +2,19 @@ package com.farerboy.oa.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.farerboy.framework.boot.orm.helper.EnvHelper;
+import com.farerboy.oa.dto.SystemAuthorityResourceDTO;
 import com.farerboy.oa.mapper.SystemRouteMapper;
 import com.farerboy.oa.model.SystemRoute;
 import com.farerboy.oa.param.RouteAddParam;
 import com.farerboy.oa.param.RouteEditParam;
+import com.farerboy.oa.service.AuthorityResourceService;
 import com.farerboy.oa.service.RouteService;
 import com.farerboy.oa.service.base.impl.BaseServiceImpl;
 import com.farerboy.oa.vo.admin.RouteVO;
 import com.farerboy.oa.vo.easyui.TreeNode;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,13 +29,15 @@ import java.util.List;
 @Service
 public class RouteServiceImpl extends BaseServiceImpl<SystemRouteMapper, SystemRoute> implements RouteService {
 
+    @Autowired
+    private AuthorityResourceService authorityResourceService;
 
     @Override
     public List<RouteVO> treegrid(Integer parentId) {
-        return treegrid(parentId,null);
+        return treegrid(parentId,null,true);
     }
 
-    private List<RouteVO> treegrid(Integer parentId,String parentName){
+    private List<RouteVO> treegrid(Integer parentId,String parentName,boolean recursive){
         if(parentId == null){
             parentId = -1;
         }
@@ -57,18 +62,45 @@ public class RouteServiceImpl extends BaseServiceImpl<SystemRouteMapper, SystemR
                 routeVO.setParentId(parentId);
             }
             routeVO.setParentName(parentName);
-            List<RouteVO> child = treegrid(systemRoute.getId(),systemRoute.getName());
-            if(CollectionUtils.isNotEmpty(child)){
-                routeVO.setChildren(child);
+            if(recursive){
+                List<RouteVO> child = treegrid(systemRoute.getId(),systemRoute.getName(),true);
+                if(CollectionUtils.isNotEmpty(child)){
+                    routeVO.setChildren(child);
+                }
             }
-//            QueryWrapper countWrapper = getBaseQueryWrapper();
-//            countWrapper.eq("parent_id",systemRoute.getId());
-//            Integer count = baseMapper.selectCount(countWrapper);
-//            routeVO.setState(count > 0 ? "closed" : "open");
             result.add(routeVO);
         }
         return result;
     }
+
+    @Override
+    public List<RouteVO> treegridByAuthorityIdWithCheck(Integer authorityId) {
+        // 获取该权限下的所有路由
+        List<Integer> routeIds = authorityResourceService.listRouteIdsByAuthorityId(authorityId);
+        if(routeIds == null){
+            routeIds = new ArrayList<>();
+        }
+        return treegridWithCheck(routeIds,null,null,true);
+    }
+
+    private List<RouteVO> treegridWithCheck(List<Integer> routeIds,Integer parentId,String parentName,boolean recursive){
+        List<RouteVO> result = new ArrayList<>();
+        List<RouteVO> root = treegrid(parentId,parentName,false);
+        if(CollectionUtils.isEmpty(root)){
+            return result;
+        }
+        for(RouteVO routeVO : root){
+            if(routeIds.contains(routeVO.getId())){
+                routeVO.setChecked(true);
+            }
+            if(recursive){
+                routeVO.setChildren(treegridWithCheck(routeIds,routeVO.getId(),routeVO.getName(),true));
+            }
+            result.add(routeVO);
+        }
+        return result;
+    }
+
 
     @Override
     public List<TreeNode> tree(Integer parentId) {

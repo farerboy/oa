@@ -44,6 +44,16 @@ public class PageAdminController {
         return "admin/authorityEdit";
     }
 
+    @GetMapping("/authorityRoute")
+    public String authorityRoute(){
+        return "admin/authorityRoute";
+    }
+
+    @GetMapping("/routeSelect")
+    public String routeSelect(){
+        return "admin/routeSelect";
+    }
+
     @GetMapping("/role")
     public String role(){
         return "admin/role";

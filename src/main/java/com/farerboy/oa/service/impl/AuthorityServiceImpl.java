@@ -69,4 +69,5 @@ public class AuthorityServiceImpl extends BaseServiceImpl<SystemAuthorityMapper,
         systemAuthority.setId(id);
         updateById(systemAuthority);
     }
+
 }

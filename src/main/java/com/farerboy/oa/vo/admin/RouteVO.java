@@ -2,7 +2,6 @@ package com.farerboy.oa.vo.admin;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -25,6 +24,7 @@ public class RouteVO {
     private String name;
     private Integer seq;
     private String url;
-
+    // 是否勾选状态
+    private Boolean checked = false;
     private List<RouteVO> children;
 }
